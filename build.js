@@ -18,7 +18,8 @@ const required = [
   '404.html',
   'assets/styles.css',
   'assets/script.js',
-  'assets/logo.svg'
+  'assets/logo.svg',
+  'assets/donation-qr.svg'
 ];
 
 const missing = required.filter(file => !fs.existsSync(path.join(dist, file)));
