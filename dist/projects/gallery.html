@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project Photo Gallery – BIMBA NEPAL</title>
+  <meta name="description" content="Project photography gallery for BIMBA NEPAL initiatives.">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/project-gallery.css">
+</head>
+<body>
+  <header class="page-header">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">Home</a>
+        <span class="sep">/</span>
+        <a href="./">Projects</a>
+        <span class="sep">/</span>
+        <span>Photo gallery</span>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>Project photo gallery</h1>
+      <p class="lead">Upload real project photos into each project folder and swap the placeholder image with the final file. This keeps the site static and easy to manage without a CMS.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-card">
+        <div class="gallery-grid">
+          <article class="project-card">
+            <div class="media">
+              <img src="../assets/projects/women-wellbeing-bhimdhunga/placeholder.svg" alt="Women Wellbeing Bhimdhunga project photo placeholder">
+            </div>
+            <div class="content">
+              <p class="tag">Women Wellbeing</p>
+              <h3><a href="./women-wellbeing-bhimdhunga/">Pilot Project on Women Wellbeing</a></h3>
+              <p>Replace the placeholder with a real photo of the Bhimdhunga clinic or community activity.</p>
+              <div class="meta">Folder: <code>dist/assets/projects/women-wellbeing-bhimdhunga/</code></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="media">
+              <img src="../assets/projects/health-longevity-service-mathatirtha/placeholder.svg" alt="Health Longevity Service Mathatirtha project photo placeholder">
+            </div>
+            <div class="content">
+              <p class="tag">Health Longevity</p>
+              <h3><a href="./health-longevity-service-mathatirtha/">Pilot Project on Health Longevity Service</a></h3>
+              <p>Use photos of health screening, community consultations, and older persons' services.</p>
+              <div class="meta">Folder: <code>dist/assets/projects/health-longevity-service-mathatirtha/</code></div>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="media">
+              <img src="../assets/projects/emergency-response-bidur-trishuli/placeholder.svg" alt="Emergency Response Bidur Trishuli project photo placeholder">
+            </div>
+            <div class="content">
+              <p class="tag">Emergency Response</p>
+              <h3><a href="./emergency-response-bidur-trishuli/">Emergency Response Project</a></h3>
+              <p>Add documentary images from the response work and psychosocial support activities.</p>
+              <div class="meta">Folder: <code>dist/assets/projects/emergency-response-bidur-trishuli/</code></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="notes">
+      <h2>How to add new project photos</h2>
+      <ol>
+        <li>Place the image file inside the relevant project folder, such as <code>dist/assets/projects/women-wellbeing-bhimdhunga/</code>.</li>
+        <li>Use JPG, PNG, or WebP files for the web.</li>
+        <li>Replace the placeholder SVG in the gallery card with the final image path, for example <code>../assets/projects/women-wellbeing-bhimdhunga/clinic-1.jpg</code>.</li>
+        <li>Commit and push the changes to GitHub to publish them.</li>
+      </ol>
+    </section>
+
+    <div class="btn-row">
+      <a class="btn btn-primary" href="./">Back to projects</a>
+      <a class="btn btn-secondary" href="../">Go to homepage</a>
+    </div>
+  </main>
+
+  <div class="container footer-note">Use the project folders in <code>dist/assets/projects/</code> to keep project photos organized and easy to update.</div>
+</body>
+</html>

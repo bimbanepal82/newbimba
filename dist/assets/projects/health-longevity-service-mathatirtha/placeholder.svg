@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Health Longevity Service Mathatirtha placeholder</title>
+  <desc id="desc">Placeholder image for the Health Longevity Service Mathatirtha project.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f4f2ff"/>
+      <stop offset="100%" stop-color="#e4eef9"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="160" y="140" width="880" height="520" rx="24" fill="#ffffff" opacity="0.82"/>
+  <path d="M220 490c90-110 180-160 282-160 150 0 200 96 336 96 124 0 181-87 242-122v200H220z" fill="#c8c3f7" opacity="0.9"/>
+  <circle cx="450" cy="285" r="82" fill="#edf2ff"/>
+  <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#0b2e52">Mathatirtha</text>
+  <text x="600" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#4a5866">Health Longevity Service</text>
+</svg>
