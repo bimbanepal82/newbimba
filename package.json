@@ -4,8 +4,7 @@
   "private": true,
   "description": "Official website of BIMBA NEPAL (bimba.org.np). Static site, no runtime dependencies.",
   "scripts": {
-    "build": "node build.js",
-    "start": "node build.js && node scripts/serve.js"
+    "build": "node build.js"
   },
   "engines": { "node": ">=18" }
 }
