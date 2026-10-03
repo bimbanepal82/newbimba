@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import { connection } from 'next/server';
 import './globals.css';
 import { getSettings } from '@/lib/data';
 
 export async function generateMetadata(): Promise<Metadata> {
+  await connection();
   const settings = await getSettings();
   const siteName = settings.site?.name || 'BIMBA NEPAL';
   const tagline = settings.site?.tagline || 'Health • Longevity • Service';
