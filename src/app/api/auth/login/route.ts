@@ -1,11 +1,13 @@
 import { NextResponse } from 'next/server';
-import { ADMIN_CREDENTIALS, createSessionToken, COOKIE_NAME } from '@/lib/auth';
+import { authenticateCredentials, createSessionToken, COOKIE_NAME } from '@/lib/auth';
 
 export async function POST(req: Request) {
   try {
     const { username, password } = await req.json();
 
-    if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+    const isValid = await authenticateCredentials(username, password);
+
+    if (isValid) {
       const token = createSessionToken(username);
       const response = NextResponse.json({ success: true, message: 'Logged in successfully' });
 

@@ -3,7 +3,7 @@ import { getBlogs, saveBlog, deleteBlog, BlogPost } from '@/lib/data';
 import { isAuthenticated } from '@/lib/auth';
 
 export async function GET() {
-  const blogs = getBlogs(false);
+  const blogs = await getBlogs(false);
   return NextResponse.json(blogs);
 }
 
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
       post.date = new Date().toISOString().split('T')[0];
     }
 
-    const saved = saveBlog(post);
+    const saved = await saveBlog(post);
     return NextResponse.json({ success: true, blog: saved });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to save blog' }, { status: 500 });
@@ -52,7 +52,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: 'Blog ID is required' }, { status: 400 });
     }
 
-    const deleted = deleteBlog(id);
+    const deleted = await deleteBlog(id);
     if (!deleted) {
       return NextResponse.json({ error: 'Blog not found' }, { status: 404 });
     }

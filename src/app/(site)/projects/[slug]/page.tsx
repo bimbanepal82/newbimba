@@ -12,7 +12,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return { title: 'Project Not Found' };
 
   return {
@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectDetailPage({ params }: Props) {
   const { slug } = await params;
-  const project = getProjectBySlug(slug);
-  const settings = getSettings();
+  const project = await getProjectBySlug(slug);
+  const settings = await getSettings();
 
   if (!project) {
     notFound();

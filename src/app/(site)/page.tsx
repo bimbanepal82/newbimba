@@ -5,8 +5,8 @@ import { getSettings, getProjects } from '@/lib/data';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const settings = getSettings();
-  const projects = getProjects(true);
+  const settings = await getSettings();
+  const projects = await getProjects(true);
 
   return (
     <>

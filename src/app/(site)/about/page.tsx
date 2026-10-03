@@ -11,8 +11,8 @@ export const metadata: Metadata = {
     'BIMBA Nepal is a community-oriented organization working toward healthier communities and more empowered lives through health services, community engagement, partnership and responsive action.',
 };
 
-export default function AboutPage() {
-  const settings = getSettings();
+export default async function AboutPage() {
+  const settings = await getSettings();
 
   return (
     <>

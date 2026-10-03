@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description: 'Project photography gallery for BIMBA NEPAL initiatives.',
 };
 
-export default function GalleryPage() {
-  const projects = getProjects(true);
+export default async function GalleryPage() {
+  const projects = await getProjects(true);
 
   return (
     <>

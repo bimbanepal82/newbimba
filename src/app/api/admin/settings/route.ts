@@ -3,7 +3,7 @@ import { getSettings, updateSettings } from '@/lib/data';
 import { isAuthenticated } from '@/lib/auth';
 
 export async function GET() {
-  const settings = getSettings();
+  const settings = await getSettings();
   return NextResponse.json(settings);
 }
 
@@ -15,7 +15,7 @@ export async function PUT(req: Request) {
 
   try {
     const body = await req.json();
-    const updated = updateSettings(body);
+    const updated = await updateSettings(body);
     return NextResponse.json({ success: true, settings: updated });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update settings' }, { status: 500 });

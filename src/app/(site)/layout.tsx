@@ -11,7 +11,7 @@ export default async function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const settings = getSettings();
+  const settings = await getSettings();
 
   return (
     <>

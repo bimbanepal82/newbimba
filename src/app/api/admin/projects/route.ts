@@ -3,7 +3,7 @@ import { getProjects, saveProject, deleteProject, ProjectItem } from '@/lib/data
 import { isAuthenticated } from '@/lib/auth';
 
 export async function GET() {
-  const projects = getProjects(false);
+  const projects = await getProjects(false);
   return NextResponse.json(projects);
 }
 
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       project.photos = [];
     }
 
-    const saved = saveProject(project);
+    const saved = await saveProject(project);
     return NextResponse.json({ success: true, project: saved });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to save project' }, { status: 500 });
@@ -55,7 +55,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
     }
 
-    const deleted = deleteProject(id);
+    const deleted = await deleteProject(id);
     if (!deleted) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }

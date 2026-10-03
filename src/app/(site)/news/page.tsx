@@ -10,9 +10,9 @@ export const metadata: Metadata = {
   description: 'Project updates, health insights and announcements from BIMBA NEPAL.',
 };
 
-export default function NewsPage() {
-  const blogs = getBlogs(true);
-  const settings = getSettings();
+export default async function NewsPage() {
+  const blogs = await getBlogs(true);
+  const settings = await getSettings();
 
   return (
     <>

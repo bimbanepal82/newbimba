@@ -10,9 +10,9 @@ export const metadata: Metadata = {
   description: 'BIMBA Nepal projects in women’s wellbeing, health longevity service and emergency response.',
 };
 
-export default function ProjectsPage() {
-  const projects = getProjects(true);
-  const settings = getSettings();
+export default async function ProjectsPage() {
+  const projects = await getProjects(true);
+  const settings = await getSettings();
 
   return (
     <>

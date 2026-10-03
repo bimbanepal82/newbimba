@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { supabaseAdmin, isSupabaseConfigured } from './supabase';
 
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
@@ -7,7 +8,7 @@ const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
 const PROJECTS_FILE = path.join(DATA_DIR, 'projects.json');
 const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
 
-// Ensure directories exist
+// Ensure local directories exist as fallback
 function ensureDirs() {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -137,26 +138,43 @@ export interface MediaFile {
   url: string;
   size: number;
   createdAt: string;
+  fileType?: string;
 }
 
 // ----------------- Site Settings -----------------
-export function getSettings(): SiteSettings {
+export async function getSettings(): Promise<SiteSettings> {
+  // 1. Try Supabase
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from('site_settings')
+        .select('data')
+        .eq('id', 'global')
+        .single();
+      if (!error && data?.data) {
+        return data.data as SiteSettings;
+      }
+    } catch (e) {
+      console.warn('Supabase site_settings error, using local fallback:', e);
+    }
+  }
+
+  // 2. Local JSON fallback
   ensureDirs();
   try {
     if (fs.existsSync(SETTINGS_FILE)) {
-      const data = fs.readFileSync(SETTINGS_FILE, 'utf-8');
-      return JSON.parse(data);
+      const fileData = fs.readFileSync(SETTINGS_FILE, 'utf-8');
+      return JSON.parse(fileData);
     }
   } catch (err) {
-    console.error('Error reading settings:', err);
+    console.error('Error reading local settings:', err);
   }
   return {} as SiteSettings;
 }
 
-export function updateSettings(settings: Partial<SiteSettings>): SiteSettings {
-  ensureDirs();
-  const current = getSettings();
-  const updated = {
+export async function updateSettings(settings: Partial<SiteSettings>): Promise<SiteSettings> {
+  const current = await getSettings();
+  const updated: SiteSettings = {
     ...current,
     ...settings,
     site: { ...current.site, ...settings.site },
@@ -170,12 +188,59 @@ export function updateSettings(settings: Partial<SiteSettings>): SiteSettings {
     donation: { ...current.donation, ...settings.donation },
     contact: { ...current.contact, ...settings.contact },
   };
+
+  // 1. Save to Supabase if configured
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      await supabaseAdmin
+        .from('site_settings')
+        .upsert({ id: 'global', data: updated, updated_at: new Date().toISOString() });
+    } catch (e) {
+      console.warn('Supabase update site_settings error:', e);
+    }
+  }
+
+  // 2. Always persist locally as well
+  ensureDirs();
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(updated, null, 2), 'utf-8');
   return updated;
 }
 
 // ----------------- Blogs -----------------
-export function getBlogs(onlyPublished = false): BlogPost[] {
+export async function getBlogs(onlyPublished = false): Promise<BlogPost[]> {
+  // 1. Try Supabase
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      let query = supabaseAdmin
+        .from('blogs')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (onlyPublished) {
+        query = query.eq('published', true);
+      }
+
+      const { data, error } = await query;
+      if (!error && data) {
+        return data.map((b: any) => ({
+          id: b.id,
+          title: b.title,
+          slug: b.slug,
+          category: b.category,
+          date: b.date,
+          author: b.author,
+          summary: b.summary,
+          coverImage: b.cover_image,
+          content: b.content,
+          published: b.published,
+        }));
+      }
+    } catch (e) {
+      console.warn('Supabase getBlogs error, using local fallback:', e);
+    }
+  }
+
+  // 2. Local JSON fallback
   ensureDirs();
   try {
     if (fs.existsSync(BLOGS_FILE)) {
@@ -184,20 +249,55 @@ export function getBlogs(onlyPublished = false): BlogPost[] {
       return onlyPublished ? blogs.filter((b) => b.published) : blogs;
     }
   } catch (err) {
-    console.error('Error reading blogs:', err);
+    console.error('Error reading local blogs:', err);
   }
   return [];
 }
 
-export function getBlogBySlug(slug: string): BlogPost | null {
-  const blogs = getBlogs();
+export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
+  const blogs = await getBlogs();
   return blogs.find((b) => b.slug === slug) || null;
 }
 
-export function saveBlog(post: BlogPost): BlogPost {
+export async function saveBlog(post: BlogPost): Promise<BlogPost> {
+  // 1. Save to Supabase if configured
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      const payload: any = {
+        title: post.title,
+        slug: post.slug,
+        category: post.category,
+        date: post.date,
+        author: post.author,
+        summary: post.summary,
+        cover_image: post.coverImage,
+        content: post.content,
+        published: post.published,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (post.id && !post.id.startsWith('blog-')) {
+        payload.id = post.id;
+      }
+
+      const { data, error } = await supabaseAdmin
+        .from('blogs')
+        .upsert(payload, { onConflict: 'slug' })
+        .select('*')
+        .single();
+
+      if (!error && data) {
+        post.id = data.id;
+      }
+    } catch (e) {
+      console.warn('Supabase saveBlog error:', e);
+    }
+  }
+
+  // 2. Local JSON update
   ensureDirs();
-  const blogs = getBlogs();
-  const index = blogs.findIndex((b) => b.id === post.id);
+  const blogs = await getBlogs();
+  const index = blogs.findIndex((b) => b.id === post.id || b.slug === post.slug);
 
   if (index >= 0) {
     blogs[index] = post;
@@ -209,19 +309,68 @@ export function saveBlog(post: BlogPost): BlogPost {
   return post;
 }
 
-export function deleteBlog(id: string): boolean {
+export async function deleteBlog(id: string): Promise<boolean> {
+  // 1. Delete from Supabase if configured
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      await supabaseAdmin.from('blogs').delete().eq('id', id);
+    } catch (e) {
+      console.warn('Supabase deleteBlog error:', e);
+    }
+  }
+
+  // 2. Local JSON delete
   ensureDirs();
-  const blogs = getBlogs();
+  const blogs = await getBlogs();
   const filtered = blogs.filter((b) => b.id !== id);
   if (filtered.length !== blogs.length) {
     fs.writeFileSync(BLOGS_FILE, JSON.stringify(filtered, null, 2), 'utf-8');
     return true;
   }
-  return false;
+  return true;
 }
 
 // ----------------- Projects -----------------
-export function getProjects(onlyPublished = false): ProjectItem[] {
+export async function getProjects(onlyPublished = false): Promise<ProjectItem[]> {
+  // 1. Try Supabase
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      let query = supabaseAdmin
+        .from('projects')
+        .select('*')
+        .order('sort_order', { ascending: true });
+
+      if (onlyPublished) {
+        query = query.eq('published', true);
+      }
+
+      const { data, error } = await query;
+      if (!error && data) {
+        return data.map((p: any) => ({
+          id: p.id,
+          title: p.title,
+          slug: p.slug,
+          eyebrow: p.eyebrow,
+          location: p.location,
+          location_short: p.location_short,
+          date_text: p.date_text,
+          status: p.status,
+          sort_order: p.sort_order,
+          short_description: p.short_description,
+          featured_image: p.featured_image,
+          stats_title: p.stats_title,
+          stats: p.stats || [],
+          content: p.content,
+          photos: p.photos || [],
+          published: p.published,
+        }));
+      }
+    } catch (e) {
+      console.warn('Supabase getProjects error, using local fallback:', e);
+    }
+  }
+
+  // 2. Local JSON fallback
   ensureDirs();
   try {
     if (fs.existsSync(PROJECTS_FILE)) {
@@ -231,20 +380,61 @@ export function getProjects(onlyPublished = false): ProjectItem[] {
       return onlyPublished ? sorted.filter((p) => p.published) : sorted;
     }
   } catch (err) {
-    console.error('Error reading projects:', err);
+    console.error('Error reading local projects:', err);
   }
   return [];
 }
 
-export function getProjectBySlug(slug: string): ProjectItem | null {
-  const projects = getProjects();
+export async function getProjectBySlug(slug: string): Promise<ProjectItem | null> {
+  const projects = await getProjects();
   return projects.find((p) => p.slug === slug) || null;
 }
 
-export function saveProject(project: ProjectItem): ProjectItem {
+export async function saveProject(project: ProjectItem): Promise<ProjectItem> {
+  // 1. Supabase
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      const payload: any = {
+        title: project.title,
+        slug: project.slug,
+        eyebrow: project.eyebrow,
+        location: project.location,
+        location_short: project.location_short,
+        date_text: project.date_text,
+        status: project.status,
+        sort_order: project.sort_order,
+        short_description: project.short_description,
+        featured_image: project.featured_image,
+        stats_title: project.stats_title,
+        stats: project.stats || [],
+        content: project.content,
+        photos: project.photos || [],
+        published: project.published,
+        updated_at: new Date().toISOString(),
+      };
+
+      if (project.id && !project.id.startsWith('project-')) {
+        payload.id = project.id;
+      }
+
+      const { data, error } = await supabaseAdmin
+        .from('projects')
+        .upsert(payload, { onConflict: 'slug' })
+        .select('*')
+        .single();
+
+      if (!error && data) {
+        project.id = data.id;
+      }
+    } catch (e) {
+      console.warn('Supabase saveProject error:', e);
+    }
+  }
+
+  // 2. Local JSON
   ensureDirs();
-  const projects = getProjects();
-  const index = projects.findIndex((p) => p.id === project.id);
+  const projects = await getProjects();
+  const index = projects.findIndex((p) => p.id === project.id || p.slug === project.slug);
 
   if (index >= 0) {
     projects[index] = project;
@@ -257,30 +447,61 @@ export function saveProject(project: ProjectItem): ProjectItem {
   return project;
 }
 
-export function deleteProject(id: string): boolean {
+export async function deleteProject(id: string): Promise<boolean> {
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      await supabaseAdmin.from('projects').delete().eq('id', id);
+    } catch (e) {
+      console.warn('Supabase deleteProject error:', e);
+    }
+  }
+
   ensureDirs();
-  const projects = getProjects();
+  const projects = await getProjects();
   const filtered = projects.filter((p) => p.id !== id);
   if (filtered.length !== projects.length) {
     fs.writeFileSync(PROJECTS_FILE, JSON.stringify(filtered, null, 2), 'utf-8');
     return true;
   }
-  return false;
+  return true;
 }
 
 // ----------------- Media Files -----------------
-export function getMediaFiles(): MediaFile[] {
-  ensureDirs();
+export async function getMediaFiles(): Promise<MediaFile[]> {
   const mediaList: MediaFile[] = [];
 
-  // Check public/uploads
+  // 1. Try Supabase media table
+  if (isSupabaseConfigured() && supabaseAdmin) {
+    try {
+      const { data, error } = await supabaseAdmin
+        .from('media')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (!error && data) {
+        for (const item of data) {
+          mediaList.push({
+            name: item.name,
+            url: item.url,
+            size: item.size || 0,
+            createdAt: item.created_at,
+            fileType: item.file_type,
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('Supabase getMediaFiles error:', e);
+    }
+  }
+
+  // 2. Also check local uploads & assets so nothing is missed
   if (fs.existsSync(UPLOADS_DIR)) {
     const files = fs.readdirSync(UPLOADS_DIR);
     for (const file of files) {
       try {
         const filePath = path.join(UPLOADS_DIR, file);
         const stat = fs.statSync(filePath);
-        if (stat.isFile()) {
+        if (stat.isFile() && !mediaList.some((m) => m.name === file)) {
           mediaList.push({
             name: file,
             url: `/uploads/${file}`,
@@ -294,7 +515,6 @@ export function getMediaFiles(): MediaFile[] {
     }
   }
 
-  // Also include base assets (logo, mark, qr, etc.)
   const assetsDir = path.join(process.cwd(), 'public', 'assets');
   if (fs.existsSync(assetsDir)) {
     const assets = fs.readdirSync(assetsDir);

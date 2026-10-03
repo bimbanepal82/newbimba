@@ -12,7 +12,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
+  const blog = await getBlogBySlug(slug);
   if (!blog) return { title: 'Article Not Found' };
 
   return {
@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const blog = getBlogBySlug(slug);
-  const settings = getSettings();
+  const blog = await getBlogBySlug(slug);
+  const settings = await getSettings();
 
   if (!blog) {
     notFound();

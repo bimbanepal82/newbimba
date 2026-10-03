@@ -3,7 +3,7 @@ import './globals.css';
 import { getSettings } from '@/lib/data';
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = getSettings();
+  const settings = await getSettings();
   const siteName = settings.site?.name || 'BIMBA NEPAL';
   const tagline = settings.site?.tagline || 'Health • Longevity • Service';
   const description =
