@@ -5,6 +5,12 @@ import { ProjectItem, ProjectStat, ProjectPhoto } from '@/lib/data';
 import { PlusCircle, Edit3, Trash2, Check, AlertCircle, Save, X, Upload, ExternalLink, Plus } from 'lucide-react';
 import Link from 'next/link';
 
+async function readError(res: Response, fallback: string) {
+  const body = await res.json().catch(() => ({}));
+  console.error(fallback, res.status, body);
+  return (body && (body.error || body.message)) || `${fallback} (HTTP ${res.status})`;
+}
+
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,13 +21,12 @@ export default function AdminProjectsPage() {
 
   const fetchProjects = async () => {
     try {
-      const res = await fetch('/api/admin/projects');
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to load projects');
-      setProjects(data);
+      const res = await fetch('/api/admin/projects', { cache: 'no-store' });
+      if (!res.ok) throw new Error(await readError(res, 'Failed to load projects'));
+      setProjects(await res.json());
     } catch (err) {
       console.error('Failed to load projects:', err);
-      setMessage({ type: 'error', text: 'Failed to load projects' });
+      setMessage({ type: 'error', text: err instanceof Error ? err.message : 'Failed to load projects' });
     } finally {
       setLoading(false);
     }
@@ -66,15 +71,17 @@ export default function AdminProjectsPage() {
     if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
 
     try {
-      const res = await fetch(`/api/admin/projects?id=${id}`, { method: 'DELETE' });
-      if (res.ok) {
-        setMessage({ type: 'success', text: `Project "${title}" deleted successfully` });
-        fetchProjects();
-      } else {
-        throw new Error('Delete failed');
-      }
+      const res = await fetch(`/api/admin/projects?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE',
+        cache: 'no-store',
+      });
+      if (!res.ok) throw new Error(await readError(res, 'Delete failed'));
+
+      setProjects((prev) => prev.filter((p) => p.id !== id));
+      setMessage({ type: 'success', text: `Project "${title}" deleted successfully` });
     } catch (err) {
-      setMessage({ type: 'error', text: 'Failed to delete project' });
+      setMessage({ type: 'error', text: err instanceof Error ? err.message : 'Failed to delete project' });
+      fetchProjects();
     }
   };
 
@@ -99,17 +106,17 @@ export default function AdminProjectsPage() {
       const res = await fetch('/api/admin/projects', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
         body: JSON.stringify(projectToSave),
       });
-
-      if (!res.ok) throw new Error('Save failed');
+      if (!res.ok) throw new Error(await readError(res, 'Save failed'));
 
       setMessage({ type: 'success', text: 'Project saved successfully!' });
       setEditingProject(null);
-      fetchProjects();
     } catch (err) {
-      setMessage({ type: 'error', text: 'Error saving project' });
+      setMessage({ type: 'error', text: err instanceof Error ? err.message : 'Error saving project' });
     } finally {
+      await fetchProjects();
       setSaving(false);
     }
   };
@@ -127,13 +134,14 @@ export default function AdminProjectsPage() {
         method: 'POST',
         body: formData,
       });
-      const data = await res.json();
-      if (data.success && data.url) {
-        setEditingProject({ ...editingProject, featured_image: data.url });
-        setMessage({ type: 'success', text: 'Featured image uploaded!' });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success || !data.url) {
+        throw new Error(data.error || `Upload failed (${res.status})`);
       }
+      setEditingProject({ ...editingProject, featured_image: data.url });
+      setMessage({ type: 'success', text: 'Featured image uploaded!' });
     } catch (err) {
-      setMessage({ type: 'error', text: 'Image upload failed' });
+      setMessage({ type: 'error', text: err instanceof Error ? err.message : 'Image upload failed' });
     }
   };
 
@@ -221,8 +229,7 @@ export default function AdminProjectsPage() {
 
   const updateStat = (index: number, field: keyof ProjectStat, val: string) => {
     if (!editingProject) return;
-    const newStats = [...editingProject.stats];
-    newStats[index][field] = val;
+    const newStats = editingProject.stats.map((st, i) => (i === index ? { ...st, [field]: val } : st));
     setEditingProject({ ...editingProject, stats: newStats });
   };
 
