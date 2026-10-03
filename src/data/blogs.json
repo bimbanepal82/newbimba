@@ -1,0 +1,38 @@
+[
+  {
+    "id": "women-wellbeing-health-camp",
+    "title": "Community Health Camp on Women Wellbeing Concluded at Bhimdhunga",
+    "slug": "women-wellbeing-health-camp",
+    "category": "Women's Health",
+    "date": "2026-09-15",
+    "author": "BIMBA Nepal Team",
+    "summary": "BIMBA Nepal organized a dedicated community health camp at Bhimdhunga Health Post focusing on maternal and geriatric health, ultrasound screening, and medical consultations.",
+    "coverImage": "/assets/projects/placeholder.svg",
+    "content": "BIMBA Nepal, in active coordination with Nagarjun Municipality, successfully organized a comprehensive free health camp at Bhimdhunga Health Post, Nagarjun Municipality–8.\n\nThe program placed particular emphasis on women's health while also providing vital diagnostic, medical, and screening services for community members. It brought together dedicated healthcare professionals, local volunteers, and municipal representatives.\n\nOver 137 community members registered for consultations, and 115 individuals benefited from video X-ray and radiologist consultant services. The community feedback highlighted the critical importance of bringing preventive healthcare directly to the grassroots level.",
+    "published": true
+  },
+  {
+    "id": "health-longevity-initiative-mathatirtha",
+    "title": "Pilot Project on Health Longevity Service at Mathatirtha",
+    "slug": "health-longevity-initiative-mathatirtha",
+    "category": "Dignified Ageing",
+    "date": "2026-09-20",
+    "author": "BIMBA Nepal Team",
+    "summary": "Promoting healthy and dignified ageing through comprehensive geriatric health assessments, pulmonary function testing, and early screening at Mathatirtha.",
+    "coverImage": "/assets/projects/placeholder.svg",
+    "content": "At Mathatirtha Health Post, Chandragiri Municipality–8, BIMBA Nepal initiated a specialized health program centered on the theme of 'स्वाभिमानी बुढ्यौली — Dignified Ageing'.\n\nThe initiative focused on community members aged 60 and above, alongside women and general residents. Services included geriatric assessments, physician consultations, pulmonary function tests supported by Cipla Nepal, and essential medicines distribution.\n\nEarly screening identified several critical conditions that enabled timely referrals to tertiary healthcare facilities, reiterating the value of community-based preventive action.",
+    "published": true
+  },
+  {
+    "id": "emergency-response-flood-affected-bidur",
+    "title": "Emergency Response and Psychosocial Relief in Bidur–Trishuli",
+    "slug": "emergency-response-flood-affected-bidur",
+    "category": "Emergency Relief",
+    "date": "2026-09-28",
+    "author": "BIMBA Nepal Team",
+    "summary": "Rapid health response camp and trauma counselling organized for 200 flood-affected individuals in Nuwakot, restoring vital chronic medicines for older citizens.",
+    "coverImage": "/assets/projects/emergency-response-bidur-trishuli/photo-1.svg",
+    "content": "Following flash floods and debris flows in the Nuwakot and Trishuli regions, immediate humanitarian assistance was needed to support displaced families and older citizens whose continuous medications were lost in the disaster.\n\nPartnering with the Geriatric Society of Nepal and Art of Living Nepal, BIMBA Nepal established an emergency medical and trauma relief center at Ranabhumaneshwar School in Sirkhali.\n\nThe camp treated 200 affected people, including 101 senior citizens, providing cardiac evaluation, orthopedic checkups, essential medicines, and trauma relief sessions.",
+    "published": true
+  }
+]

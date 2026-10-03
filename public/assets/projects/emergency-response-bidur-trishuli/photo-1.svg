@@ -1,0 +1,18 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#E8F3E8"/>
+  <rect width="1200" height="100" fill="#063C70"/>
+  <text x="600" y="60" font-size="48" font-weight="bold" text-anchor="middle" fill="white" font-family="Georgia, serif">
+    Emergency Response
+  </text>
+  <text x="600" y="150" font-size="32" text-anchor="middle" fill="#0B2E52" font-family="Georgia, serif">
+    Bidur–Trishuli Disaster Response
+  </text>
+  <circle cx="300" cy="450" r="110" fill="#063C70" opacity="0.2"/>
+  <circle cx="900" cy="450" r="110" fill="#063C70" opacity="0.2"/>
+  <text x="600" y="500" font-size="24" text-anchor="middle" fill="#0B2E52">
+    Health Support in Crisis Response
+  </text>
+  <text x="600" y="550" font-size="20" text-anchor="middle" fill="#333">
+    Medical assistance and psychosocial support for affected communities
+  </text>
+</svg>

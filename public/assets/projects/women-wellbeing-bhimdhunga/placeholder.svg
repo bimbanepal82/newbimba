@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Women Wellbeing Bhimdhunga placeholder</title>
+  <desc id="desc">Placeholder image for the Women Wellbeing Bhimdhunga project.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#edf8ee"/>
+      <stop offset="100%" stop-color="#dfeef5"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="160" y="140" width="880" height="520" rx="24" fill="#ffffff" opacity="0.78"/>
+  <path d="M230 500c80-110 152-160 242-160 134 0 172 100 310 100 130 0 176-82 248-134v180H230z" fill="#b7dca7"/>
+  <circle cx="420" cy="300" r="76" fill="#dfeff9"/>
+  <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#0b2e52">Bhimdhunga</text>
+  <text x="600" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" fill="#4a5866">Women Wellbeing</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Emergency Response Bidur Trishuli placeholder</title>
+  <desc id="desc">Placeholder image for the Emergency Response Bidur Trishuli project.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fff7ec"/>
+      <stop offset="100%" stop-color="#eaf2fa"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="160" y="140" width="880" height="520" rx="24" fill="#ffffff" opacity="0.8"/>
+  <path d="M220 490c90-120 170-170 278-170 124 0 182 70 310 70 130 0 182-94 262-160v200H220z" fill="#f5d7a3" opacity="0.95"/>
+  <circle cx="470" cy="285" r="82" fill="#fff4de"/>
+  <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" font-weight="700" fill="#0b2e52">Bidur–Trishuli</text>
+  <text x="600" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#4a5866">Emergency Response</text>
+</svg>

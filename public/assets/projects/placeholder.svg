@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Project photo placeholder</title>
+  <desc id="desc">A neutral placeholder graphic for BIMBA Nepal project photography.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#eaf2fa"/>
+      <stop offset="100%" stop-color="#dfeeff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <circle cx="286" cy="250" r="120" fill="#cfe1f7"/>
+  <circle cx="930" cy="220" r="150" fill="#dfeefb"/>
+  <rect x="190" y="150" width="820" height="500" rx="24" fill="#ffffff" opacity="0.78"/>
+  <path d="M270 460c70-100 160-140 215-140 110 0 170 62 300 62 110 0 162-51 229-117v188H270v7z" fill="#9abfe8" opacity="0.78"/>
+  <rect x="350" y="300" width="500" height="180" rx="18" fill="#eef6ff"/>
+  <text x="600" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#0b2e52">Project Photo</text>
+  <text x="600" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#4f6583">Replace with real image</text>
+</svg>

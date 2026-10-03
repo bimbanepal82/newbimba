@@ -4,7 +4,35 @@
 
 BIMBA Nepal is a community-focused organization working to improve health, longevity and quality of life through accessible, community-based healthcare and service.
 
-This repository contains the source code and content for the **BIMBA Nepal official website**.
+This repository contains the source code and content for the **BIMBA Nepal official website**, built with **Next.js (App Router)** and featuring an **inbuilt CPanel Content Management System**.
+
+## Quick Start (Next.js & CPanel)
+
+### 1. Install & Run
+```bash
+# Start development server
+npm run dev
+
+# Or build and run production server
+npm run build
+npm run start
+```
+The website will be available at `http://localhost:3000`.
+
+### 2. Access the Inbuilt CPanel
+Open your browser to:
+- **CPanel URL:** `http://localhost:3000/admin` (or `/cpanel`)
+- **Default Username:** `admin`
+- **Default Password:** `bimba@admin2026`
+
+*(Credentials can be customized in `.env.local` via `ADMIN_USERNAME` and `ADMIN_PASSWORD`)*
+
+### 3. What you can manage in CPanel:
+- **Headers & Hero:** Change the main headline, tagline, eyebrow, lead text, primary/secondary CTA buttons, and header logo.
+- **Blogs & News:** Create, edit, publish/draft, or delete blog articles and updates.
+- **Projects:** Manage community health projects, location, status, impact stats counters, and detailed content.
+- **Media & Images:** Upload images with 1-click, copy URLs to clipboard, or directly replace the Site Logo, Hero graphic, or Bank Donation QR code.
+- **Real-time Persistence:** All changes made in the CPanel are immediately saved to disk (`src/data/*.json` and `public/uploads/`) and take effect on the live website.
 
 ## About BIMBA Nepal
 
