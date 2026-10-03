@@ -6,21 +6,24 @@ This guide shows you exactly how to add project photos to your BIMBA Nepal websi
 
 - Use JPG, PNG, or WebP format (smaller file sizes are better for web)
 - Recommended size: **1200px × 800px** (wide photos work best)
-- Keep file size under 500KB per photo
+- Keep file size under 500KB per photos
 
 ## Step 2: Organize Photos by Project
 
 Create one folder per project inside this path:
+
 ```
 dist/assets/projects/
 ```
 
 **Folder names (use these exactly):**
+
 - `women-wellbeing-bhimdhunga/`
 - `health-longevity-service-mathatirtha/`
 - `emergency-response-bidur-trishuli/`
 
 Example structure:
+
 ```
 dist/
 └── assets/
@@ -80,15 +83,21 @@ Once photos are uploaded, you need to tell the website where they are.
 Edit: `dist/projects/gallery.html`
 
 Find this section:
+
 ```html
-<img src="../assets/projects/women-wellbeing-bhimdhunga/placeholder.svg" 
-     alt="Women Wellbeing Bhimdhunga project photo placeholder">
+<img
+  src="../assets/projects/women-wellbeing-bhimdhunga/placeholder.svg"
+  alt="Women Wellbeing Bhimdhunga project photo placeholder"
+/>
 ```
 
 Replace it with your photo:
+
 ```html
-<img src="../assets/projects/women-wellbeing-bhimdhunga/photo1.jpg" 
-     alt="Women Wellbeing clinic in Bhimdhunga">
+<img
+  src="../assets/projects/women-wellbeing-bhimdhunga/photo1.jpg"
+  alt="Women Wellbeing clinic in Bhimdhunga"
+/>
 ```
 
 ### For Individual Project Pages
@@ -96,16 +105,23 @@ Replace it with your photo:
 Example: `dist/projects/women-wellbeing-bhimdhunga/index.html`
 
 Add photos like this:
+
 ```html
 <section class="project-photos">
   <h2>Project Photos</h2>
   <div class="photo-grid">
-    <img src="../../assets/projects/women-wellbeing-bhimdhunga/photo1.jpg" 
-         alt="Community gathering at Bhimdhunga">
-    <img src="../../assets/projects/women-wellbeing-bhimdhunga/photo2.jpg" 
-         alt="Health screening session">
-    <img src="../../assets/projects/women-wellbeing-bhimdhunga/photo3.jpg" 
-         alt="Doctor consultation with patient">
+    <img
+      src="../../assets/projects/women-wellbeing-bhimdhunga/photo1.jpg"
+      alt="Community gathering at Bhimdhunga"
+    />
+    <img
+      src="../../assets/projects/women-wellbeing-bhimdhunga/photo2.jpg"
+      alt="Health screening session"
+    />
+    <img
+      src="../../assets/projects/women-wellbeing-bhimdhunga/photo3.jpg"
+      alt="Doctor consultation with patient"
+    />
   </div>
 </section>
 ```
@@ -113,6 +129,7 @@ Add photos like this:
 ## Step 5: Publish Your Changes
 
 1. After editing the HTML file, commit and push:
+
    ```bash
    git add dist/projects/
    git commit -m "Update gallery with real project photos"
@@ -125,6 +142,7 @@ Add photos like this:
 ## Photo File Naming Tips
 
 Use clear, descriptive names:
+
 - ✅ `bhimdhunga-clinic-1.jpg`
 - ✅ `health-checkup-older-woman.jpg`
 - ✅ `emergency-response-community.jpg`
@@ -136,11 +154,13 @@ Use clear, descriptive names:
 Remember the path structure for linking photos:
 
 **From gallery.html (in `dist/projects/`):**
+
 ```
 ../assets/projects/[PROJECT-FOLDER]/[PHOTO-FILE]
 ```
 
 **From individual project pages (in `dist/projects/[PROJECT-FOLDER]/`):**
+
 ```
 ../../assets/projects/[PROJECT-FOLDER]/[PHOTO-FILE]
 ```
@@ -167,5 +187,6 @@ That's it! Your photo is now live on the website.
 ## Need Help?
 
 If you have questions:
+
 - Check the gallery page: https://github.com/bimbanepal82/newbimba/blob/main/dist/projects/gallery.html
 - Check the project structure: https://github.com/bimbanepal82/newbimba/tree/main/dist/assets/projects
