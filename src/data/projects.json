@@ -1,6 +1,6 @@
 [
   {
-    "id": "women-wellbeing-bhimdhunga",
+    "id": "443b0682-9d9b-4c19-9eed-b38e196d3c44",
     "title": "Pilot Project on Women Wellbeing",
     "slug": "women-wellbeing-bhimdhunga",
     "eyebrow": "Bhimdhunga",
@@ -13,19 +13,34 @@
     "featured_image": "/assets/projects/placeholder.svg",
     "stats_title": "Program reach",
     "stats": [
-      { "value": "137", "label": "Total registrations" },
-      { "value": "115", "label": "Video X-ray / Radiologist Consultant services" },
-      { "value": "91", "label": "Physician & Geriatric consultation" },
-      { "value": "64", "label": "Gynecology consultation" }
+      {
+        "label": "Total registrations",
+        "value": "137"
+      },
+      {
+        "label": "Video X-ray / Radiologist Consultant services",
+        "value": "115"
+      },
+      {
+        "label": "Physician & Geriatric consultation",
+        "value": "91"
+      },
+      {
+        "label": "Gynecology consultation",
+        "value": "64"
+      }
     ],
-    "content": "The first program was developed as a **Pilot Project on Women Wellbeing**, with the objective of bringing relevant healthcare and screening services closer to women and the wider community.\n\nBIMBA Nepal, in coordination with **Nagarjun Municipality**, organized a free health camp at **Bhimdhunga Health Post, Nagarjun Municipality–8**.\n\nThe program placed particular emphasis on women's health while also providing diagnostic, medical and screening services for community members. It brought together health professionals, volunteers, local representatives and community members.\n\n## Services included\n\n- Women's health and gynecology consultation\n- Gynecology specialist services\n- Video X-ray\n- Radiologist consultation\n- Physician consultation\n- Geriatric health consultation\n- Non-communicable disease (NCD) screening\n\n## Why Women Wellbeing?\n\nWomen's health is inseparable from the health of families and communities.\nYet access to appropriate healthcare can be affected by distance, awareness, cost, time and other social and practical barriers.\nThe pilot project therefore sought to bring services closer to the community and create an opportunity for women to access specialist consultation, diagnostic services and health screening.\nFor BIMBA Nepal, this first pilot helped demonstrate the importance of **community-based access to healthcare and the need to understand health from the perspective of the people receiving the service.**",
+    "content": "The first program was developed as a **Pilot Project on Women Wellbeing**, with the objective of bringing relevant healthcare and screening services closer to women and the wider community.\r\n\r\nBIMBA Nepal, in coordination with **Nagarjun Municipality**, organized a free health camp at **Bhimdhunga Health Post, Nagarjun Municipality–8**.\r\n\r\nThe program placed particular emphasis on women's health while also providing diagnostic, medical and screening services for community members. It brought together health professionals, volunteers, local representatives and community members.\r\n\r\n## Services included\r\n\r\n- Women's health and gynecology consultation\r\n- Gynecology specialist services\r\n- Video X-ray\r\n- Radiologist consultation\r\n- Physician consultation\r\n- Geriatric health consultation\r\n- Non-communicable disease (NCD) screening\r\n\r\n## Why Women Wellbeing?\r\n\r\nWomen's health is inseparable from the health of families and communities.\r\nYet access to appropriate healthcare can be affected by distance, awareness, cost, time and other social and practical barriers.",
     "photos": [
-      { "url": "/assets/projects/placeholder.svg", "caption": "Health camp registration and patient consultation" }
+      {
+        "url": "/assets/projects/placeholder.svg",
+        "caption": "Health camp registration and patient consultation"
+      }
     ],
     "published": true
   },
   {
-    "id": "health-longevity-service-mathatirtha",
+    "id": "4e6b3344-7c67-403e-bcf1-8b24482bd127",
     "title": "Pilot Project on Health Longevity Service",
     "slug": "health-longevity-service-mathatirtha",
     "eyebrow": "Mathatirtha, Chandragiri",
@@ -38,18 +53,30 @@
     "featured_image": "/assets/projects/placeholder.svg",
     "stats_title": "Program reach & focus",
     "stats": [
-      { "value": "60+", "label": "Target age group focused on healthy & dignified ageing" },
-      { "value": "1", "label": "Acute condition identified & hospital transfer coordinated" },
-      { "value": "5+", "label": "Specialized health services & medicine support" }
+      {
+        "label": "Target age group focused on healthy & dignified ageing",
+        "value": "60+"
+      },
+      {
+        "label": "Acute condition identified & hospital transfer coordinated",
+        "value": "1"
+      },
+      {
+        "label": "Specialized health services & medicine support",
+        "value": "5+"
+      }
     ],
-    "content": "The second initiative developed from BIMBA Nepal's interest in **health, longevity and dignified ageing**.\n\nThe **Pilot Project on Health Longevity Service** was conducted at **Mathatirtha Health Post, Chandragiri Municipality–8**.\n\nThe program particularly focused on people aged 60 and above while also extending relevant services to women and other members of the surrounding community.\n\nThe objective was not simply to provide medical consultation, but to explore how community-based services could support people in maintaining their health and identifying potential problems earlier.\n\n## Services included\n\n- Geriatric health assessment\n- Geriatric consultation\n- Physician consultation\n- Blood pressure testing\n- Blood sugar testing\n- Video X-ray\n- Gynecology consultation\n- Women's health services\n- Pulmonary Function Test\n- Respiratory assessment\n- Specialist consultation\n- Medicines and health materials\n\nConsultants from relevant medical fields, including **Radiology, Internal Medicine/Geriatrics and Gynecology**, participated in the program.\nWith support from **Cipla Nepal**, Pulmonary Function Testing and related consultation were also made available.\n\n## Early identification matters\n\nDuring the program, an acute health condition was identified in one participant. The individual was referred immediately to a hospital for further treatment.\nThis experience reinforced an important aspect of community health: **early identification can create an opportunity for timely action.**",
+    "content": "The second initiative developed from BIMBA Nepal's interest in **health, longevity and dignified ageing**.\r\n\r\nThe **Pilot Project on Health Longevity Service** was conducted at **Mathatirtha Health Post, Chandragiri Municipality–8**.\r\n\r\nThe program particularly focused on people aged 60 and above while also extending relevant services to women and other members of the surrounding community.\r\n\r\n## Services included\r\n\r\n- Geriatric health assessment\r\n- Geriatric consultation\r\n- Physician consultation\r\n- Blood pressure testing\r\n- Blood sugar testing\r\n- Video X-ray\r\n- Gynecology consultation\r\n- Women's health services\r\n- Pulmonary Function Test\r\n- Respiratory assessment\r\n- Specialist consultation\r\n- Medicines and health materials",
     "photos": [
-      { "url": "/assets/projects/placeholder.svg", "caption": "Senior citizen geriatric consultation and health checkup" }
+      {
+        "url": "/assets/projects/placeholder.svg",
+        "caption": "Senior citizen geriatric consultation and health checkup"
+      }
     ],
     "published": true
   },
   {
-    "id": "emergency-response-bidur-trishuli",
+    "id": "c287f747-503e-441f-bb0d-16f13e8fa788",
     "title": "Emergency Response Project",
     "slug": "emergency-response-bidur-trishuli",
     "eyebrow": "Bidur–Trishuli",
@@ -62,16 +89,57 @@
     "featured_image": "/assets/projects/placeholder.svg",
     "stats_title": "200 people served",
     "stats": [
-      { "value": "200", "label": "people received health examination and medical consultation" },
-      { "value": "101", "label": "were older persons (48 women, 53 men)" },
-      { "value": "60", "label": "older persons and family members received stress-management and psychosocial counselling" }
+      {
+        "label": "people received health examination and medical consultation",
+        "value": "200"
+      },
+      {
+        "label": "were older persons (48 women, 53 men)",
+        "value": "101"
+      },
+      {
+        "label": "older persons and family members received stress-management and psychosocial counselling",
+        "value": "60"
+      }
     ],
-    "content": "The third initiative emerged from a very different circumstance.\n\nWhen communities in the Rasuwa and Trishuli/Bhotekoshi area were affected by a flash flood/debris flood following the fall of glacier/ice mass in the high Himalayan region around Rasuwa, immediate humanitarian and health needs arose.\n\nAmong those affected were older people who had lost medicines that they regularly depended upon. For someone living with a chronic health condition, losing regular medication during a disaster can interrupt treatment and create additional health risks.\n\nBIMBA Nepal responded together with partners. **BIMBA Nepal, Geriatric Society of Nepal and Art of Living Nepal** jointly organized a free health camp on **Bhadra 20, 2083**, at the holding center of **Ranabhumaneshwar School, Sirkhali, Bidur Municipality–3, Nuwakot**.\n\n## A health response during crisis\n\nThe emergency response provided a combination of medical and psychosocial services, and particularly considered the needs of older people affected by the disaster.\n\n### Services included\n\n- Geriatric consultation\n- General medical examination\n- Orthopedic services\n- Cardiac assessment\n- Dental services\n- Osteopathy services\n- Trauma relief\n- Stress management\n- Psychosocial counselling\n- Medicines and health materials",
+    "content": "When communities in the Rasuwa and Trishuli/Bhotekoshi area were affected by a flash flood/debris flood following the fall of glacier/ice mass in the high Himalayan region around Rasuwa, immediate humanitarian and health needs arose.\r\n\r\nAmong those affected were older people who had lost medicines that they regularly depended upon.\r\n\r\nBIMBA Nepal, Geriatric Society of Nepal and Art of Living Nepal jointly organized a free health camp on Bhadra 20, 2083, at the holding center of Ranabhumaneshwar School, Sirkhali, Bidur Municipality–3, Nuwakot.\r\n\r\n## A health response during crisis\r\n\r\n### Services included\r\n\r\n- Geriatric consultation\r\n- General medical examination\r\n- Orthopedic services\r\n- Cardiac assessment\r\n- Dental services\r\n- Osteopathy services\r\n- Trauma relief\r\n- Stress management\r\n- Psychosocial counselling\r\n- Medicines and health materials",
     "photos": [
-      { "url": "/assets/projects/emergency-response-bidur-trishuli/photo-1.svg", "caption": "Emergency camp registration and medical triage" },
-      { "url": "/assets/projects/emergency-response-bidur-trishuli/photo-2.svg", "caption": "Doctor consultation and medication distribution" },
-      { "url": "/assets/projects/emergency-response-bidur-trishuli/photo-3.svg", "caption": "Psychosocial counselling and trauma support session" }
+      {
+        "url": "/assets/projects/emergency-response-bidur-trishuli/photo-1.svg",
+        "caption": "Emergency camp registration and medical triage"
+      },
+      {
+        "url": "/assets/projects/emergency-response-bidur-trishuli/photo-2.svg",
+        "caption": "Doctor consultation and medication distribution"
+      },
+      {
+        "url": "/assets/projects/emergency-response-bidur-trishuli/photo-3.svg",
+        "caption": "Psychosocial counselling and trauma support session"
+      }
     ],
+    "published": true
+  },
+  {
+    "id": "65351e57-fbe7-4749-a1d2-af8861572b1f",
+    "title": "test",
+    "slug": "test",
+    "eyebrow": "",
+    "location": "",
+    "location_short": "",
+    "date_text": "",
+    "status": "Completed",
+    "sort_order": 4,
+    "short_description": "test",
+    "featured_image": "/assets/projects/placeholder.svg",
+    "stats_title": "Program Highlights",
+    "stats": [
+      {
+        "value": "100+",
+        "label": "People served"
+      }
+    ],
+    "content": "test",
+    "photos": [],
     "published": true
   }
 ]
