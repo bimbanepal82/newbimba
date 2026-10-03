@@ -3,8 +3,13 @@ import { getBlogs, saveBlog, deleteBlog, BlogPost } from '@/lib/data';
 import { isAuthenticated } from '@/lib/auth';
 
 export async function GET() {
-  const blogs = await getBlogs(false);
-  return NextResponse.json(blogs);
+  try {
+    const blogs = await getBlogs(false);
+    return NextResponse.json(blogs);
+  } catch (error) {
+    console.error('Failed to load blogs:', error);
+    return NextResponse.json({ error: 'Failed to load blogs' }, { status: 500 });
+  }
 }
 
 export async function POST(req: Request) {
@@ -35,6 +40,7 @@ export async function POST(req: Request) {
     const saved = await saveBlog(post);
     return NextResponse.json({ success: true, blog: saved });
   } catch (error) {
+    console.error('Failed to save blog:', error);
     return NextResponse.json({ error: 'Failed to save blog' }, { status: 500 });
   }
 }
@@ -59,6 +65,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ success: true, message: 'Blog deleted' });
   } catch (error) {
+    console.error('Failed to delete blog:', error);
     return NextResponse.json({ error: 'Failed to delete blog' }, { status: 500 });
   }
 }

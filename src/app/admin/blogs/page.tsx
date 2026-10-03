@@ -19,8 +19,10 @@ export default function AdminBlogsPage() {
     try {
       const res = await fetch('/api/admin/blogs');
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load blogs');
       setBlogs(data);
     } catch (err) {
+      console.error('Failed to load blogs:', err);
       setMessage({ type: 'error', text: 'Failed to load blogs' });
     } finally {
       setLoading(false);

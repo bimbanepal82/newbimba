@@ -8,7 +8,14 @@ This repository contains the source code and content for the **BIMBA Nepal offic
 
 ## Quick Start (Next.js & CPanel)
 
-### 1. Install & Run
+### 1. Configure Supabase, Install & Run
+
+Content is stored in Supabase. Configure `NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`,
+then run `supabase/schema.sql` in the Supabase SQL Editor to create and seed the
+required tables and initial site content. The service role key is server-only;
+never expose it in client-side code.
+
 ```bash
 # Start development server
 npm run dev
@@ -32,7 +39,7 @@ Open your browser to:
 - **Blogs & News:** Create, edit, publish/draft, or delete blog articles and updates.
 - **Projects:** Manage community health projects, location, status, impact stats counters, and detailed content.
 - **Media & Images:** Upload images with 1-click, copy URLs to clipboard, or directly replace the Site Logo, Hero graphic, or Bank Donation QR code.
-- **Real-time Persistence:** All changes made in the CPanel are immediately saved to disk (`src/data/*.json` and `public/uploads/`) and take effect on the live website.
+- **Real-time Persistence:** Blog posts, projects, and site settings are stored in Supabase. Uploaded files use Supabase Storage when configured.
 
 ## About BIMBA Nepal
 

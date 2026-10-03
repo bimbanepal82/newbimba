@@ -3,8 +3,13 @@ import { getProjects, saveProject, deleteProject, ProjectItem } from '@/lib/data
 import { isAuthenticated } from '@/lib/auth';
 
 export async function GET() {
-  const projects = await getProjects(false);
-  return NextResponse.json(projects);
+  try {
+    const projects = await getProjects(false);
+    return NextResponse.json(projects);
+  } catch (error) {
+    console.error('Failed to load projects:', error);
+    return NextResponse.json({ error: 'Failed to load projects' }, { status: 500 });
+  }
 }
 
 export async function POST(req: Request) {
@@ -38,6 +43,7 @@ export async function POST(req: Request) {
     const saved = await saveProject(project);
     return NextResponse.json({ success: true, project: saved });
   } catch (error) {
+    console.error('Failed to save project:', error);
     return NextResponse.json({ error: 'Failed to save project' }, { status: 500 });
   }
 }
@@ -62,6 +68,7 @@ export async function DELETE(req: Request) {
 
     return NextResponse.json({ success: true, message: 'Project deleted' });
   } catch (error) {
+    console.error('Failed to delete project:', error);
     return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 });
   }
 }

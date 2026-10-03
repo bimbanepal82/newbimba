@@ -10,14 +10,17 @@ export default function AdminProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [editingProject, setEditingProject] = useState<ProjectItem | null>(null);
   const [saving, setSaving] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const fetchProjects = async () => {
     try {
       const res = await fetch('/api/admin/projects');
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to load projects');
       setProjects(data);
     } catch (err) {
+      console.error('Failed to load projects:', err);
       setMessage({ type: 'error', text: 'Failed to load projects' });
     } finally {
       setLoading(false);
@@ -134,6 +137,79 @@ export default function AdminProjectsPage() {
     }
   };
 
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = '';
+    if (!files.length || !editingProject) return;
+
+    setPhotoUploading(true);
+    const uploadedPhotos: ProjectPhoto[] = [];
+    const failedFiles: string[] = [];
+
+    try {
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'uploads');
+
+        try {
+          const res = await fetch('/api/admin/upload', { method: 'POST', body: formData });
+          const data = await res.json();
+          if (!res.ok || !data.success || !data.url) {
+            throw new Error(data.error || `Upload failed (${res.status})`);
+          }
+          uploadedPhotos.push({
+            url: data.url,
+            caption: file.name.replace(/\.[^.]+$/, ''),
+          });
+        } catch (error) {
+          console.error(`Failed to upload gallery photo "${file.name}":`, error);
+          failedFiles.push(file.name);
+        }
+      }
+
+      if (uploadedPhotos.length) {
+        setEditingProject((current) =>
+          current ? { ...current, photos: [...(current.photos || []), ...uploadedPhotos] } : current
+        );
+      }
+
+      if (failedFiles.length) {
+        setMessage({
+          type: 'error',
+          text: `Uploaded ${uploadedPhotos.length} photo(s); failed to upload: ${failedFiles.join(', ')}`,
+        });
+      } else {
+        setMessage({ type: 'success', text: `Uploaded ${uploadedPhotos.length} gallery photo(s). Save the project to publish them.` });
+      }
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
+
+  const addGalleryPhoto = () => {
+    if (!editingProject) return;
+    setEditingProject({
+      ...editingProject,
+      photos: [...(editingProject.photos || []), { url: '', caption: '' }],
+    });
+  };
+
+  const updateGalleryPhoto = (index: number, field: keyof ProjectPhoto, value: string) => {
+    if (!editingProject) return;
+    const photos = [...(editingProject.photos || [])];
+    photos[index] = { ...photos[index], [field]: value };
+    setEditingProject({ ...editingProject, photos });
+  };
+
+  const removeGalleryPhoto = (index: number) => {
+    if (!editingProject) return;
+    setEditingProject({
+      ...editingProject,
+      photos: (editingProject.photos || []).filter((_, photoIndex) => photoIndex !== index),
+    });
+  };
+
   // Stats Helpers
   const addStat = () => {
     if (!editingProject) return;
@@ -208,6 +284,7 @@ export default function AdminProjectsPage() {
             <button
               onClick={() => setEditingProject(null)}
               className="btn btn-outline btn-sm"
+              disabled={photoUploading}
             >
               <X size={16} /> Cancel
             </button>
@@ -405,6 +482,80 @@ export default function AdminProjectsPage() {
                 />
               </div>
 
+              <div className="form-group full-width" style={{ background: '#F8FAFC', padding: '1.2rem', borderRadius: '8px', border: '1px solid var(--admin-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.8rem', marginBottom: '0.8rem' }}>
+                  <div>
+                    <strong style={{ fontSize: '0.95rem' }}>Project Photo Gallery</strong>
+                    <div style={{ fontSize: '0.82rem', color: 'var(--admin-muted)' }}>
+                      Add multiple photos; they appear in the gallery on the public project page.
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <label className="btn btn-outline btn-sm" style={{ cursor: photoUploading ? 'wait' : 'pointer', whiteSpace: 'nowrap' }}>
+                      <Upload size={14} /> {photoUploading ? 'Uploading...' : 'Upload Photos'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        disabled={photoUploading}
+                        style={{ display: 'none' }}
+                        onChange={handleGalleryUpload}
+                      />
+                    </label>
+                    <button type="button" onClick={addGalleryPhoto} className="btn btn-outline btn-sm">
+                      <Plus size={14} /> Add Photo URL
+                    </button>
+                  </div>
+                </div>
+
+                {(editingProject.photos || []).length === 0 ? (
+                  <p style={{ margin: 0, color: 'var(--admin-muted)', fontSize: '0.88rem' }}>No gallery photos added yet.</p>
+                ) : (
+                  <div style={{ display: 'grid', gap: '0.8rem' }}>
+                    {(editingProject.photos || []).map((photo, index) => (
+                      <div key={index} style={{ display: 'grid', gridTemplateColumns: '100px minmax(0, 1fr) auto', alignItems: 'center', gap: '0.8rem' }}>
+                        {photo.url ? (
+                          <img
+                            src={photo.url}
+                            alt={photo.caption || `Gallery photo ${index + 1} preview`}
+                            style={{ width: '100px', height: '72px', objectFit: 'cover', borderRadius: '6px', border: '1px solid var(--admin-border)' }}
+                          />
+                        ) : (
+                          <div style={{ width: '100px', height: '72px', borderRadius: '6px', background: '#E2E8F0' }} />
+                        )}
+                        <div style={{ display: 'grid', gap: '0.4rem' }}>
+                          <input
+                            type="text"
+                            className="form-input"
+                            aria-label={`Gallery photo ${index + 1} URL`}
+                            value={photo.url}
+                            onChange={(e) => updateGalleryPhoto(index, 'url', e.target.value)}
+                            placeholder="Photo URL"
+                            required
+                          />
+                          <input
+                            type="text"
+                            className="form-input"
+                            aria-label={`Gallery photo ${index + 1} caption`}
+                            value={photo.caption}
+                            onChange={(e) => updateGalleryPhoto(index, 'caption', e.target.value)}
+                            placeholder="Caption (optional)"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryPhoto(index)}
+                          className="btn btn-danger btn-sm"
+                          aria-label={`Remove gallery photo ${index + 1}`}
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div className="form-group full-width">
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', cursor: 'pointer', fontWeight: 600 }}>
                   <input
@@ -423,12 +574,13 @@ export default function AdminProjectsPage() {
                 type="button"
                 onClick={() => setEditingProject(null)}
                 className="btn btn-outline"
+                disabled={photoUploading}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                disabled={saving}
+                disabled={saving || photoUploading}
                 className="btn btn-primary"
                 style={{ gap: '0.5rem' }}
               >

@@ -16,11 +16,13 @@ export default function AdminHeadersPage() {
       try {
         const res = await fetch('/api/admin/settings');
         const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to load settings');
         setSettings(data);
         if (data.focus?.chips) {
           setChipsInput(data.focus.chips.join(', '));
         }
       } catch (err) {
+        console.error('Failed to load settings:', err);
         setMessage({ type: 'error', text: 'Failed to load settings' });
       } finally {
         setLoading(false);
