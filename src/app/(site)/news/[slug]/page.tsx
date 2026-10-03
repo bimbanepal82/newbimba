@@ -6,6 +6,34 @@ import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
+function renderInlineLinks(text: string) {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+
+  return parts.map((part, index) => {
+    const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (!match) return part;
+
+    const [, label, url] = match;
+    const isSafeUrl =
+      /^https?:\/\/\S+$/i.test(url) ||
+      /^mailto:\S+@\S+\.\S+$/i.test(url) ||
+      (/^\/(?!\/)/.test(url) && !/[<>\s]/.test(url));
+
+    if (!isSafeUrl) return label;
+
+    const isExternal = /^https?:\/\//i.test(url);
+    return (
+      <a
+        key={index}
+        href={url}
+        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+      >
+        {label}
+      </a>
+    );
+  });
+}
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -65,12 +93,12 @@ export default async function BlogPostPage({ params }: Props) {
             {blog.content.split('\n\n').map((paragraph, index) => {
               const trimmed = paragraph.trim();
               if (trimmed.startsWith('## ')) {
-                return <h2 key={index}>{trimmed.replace('## ', '')}</h2>;
+                return <h2 key={index}>{renderInlineLinks(trimmed.slice(3))}</h2>;
               }
               if (trimmed.startsWith('### ')) {
-                return <h3 key={index}>{trimmed.replace('### ', '')}</h3>;
+                return <h3 key={index}>{renderInlineLinks(trimmed.slice(4))}</h3>;
               }
-              return <p key={index}>{trimmed}</p>;
+              return <p key={index}>{renderInlineLinks(trimmed)}</p>;
             })}
 
             <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--line)' }}>

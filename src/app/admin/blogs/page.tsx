@@ -1,14 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BlogPost } from '@/lib/data';
-import { PlusCircle, Edit3, Trash2, Check, AlertCircle, Save, X, Upload, ExternalLink } from 'lucide-react';
+import { PlusCircle, Edit3, Trash2, Check, AlertCircle, Save, X, Upload, ExternalLink, Link2 } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
+  const [linkText, setLinkText] = useState('');
+  const [linkUrl, setLinkUrl] = useState('');
+  const contentRef = useRef<HTMLTextAreaElement>(null);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -45,6 +48,37 @@ export default function AdminBlogsPage() {
 
   const handleEdit = (blog: BlogPost) => {
     setEditingBlog({ ...blog });
+  };
+
+  const handleInsertLink = () => {
+    if (!editingBlog) return;
+
+    const url = linkUrl.trim();
+    const isSafeUrl =
+      /^https?:\/\/\S+$/i.test(url) ||
+      /^mailto:\S+@\S+\.\S+$/i.test(url) ||
+      (/^\/(?!\/)/.test(url) && !/[<>\s]/.test(url));
+
+    if (!isSafeUrl) {
+      setMessage({ type: 'error', text: 'Enter a valid https://, http://, mailto:, or site-relative link.' });
+      return;
+    }
+
+    const textarea = contentRef.current;
+    const start = textarea?.selectionStart ?? editingBlog.content.length;
+    const end = textarea?.selectionEnd ?? start;
+    const selectedText = editingBlog.content.slice(start, end);
+    const label = (linkText.trim() || selectedText || url).replace(/[\[\]]/g, '');
+    const markdownLink = `[${label}](${url})`;
+    const content = `${editingBlog.content.slice(0, start)}${markdownLink}${editingBlog.content.slice(end)}`;
+
+    setEditingBlog({ ...editingBlog, content });
+    setLinkText('');
+    setLinkUrl('');
+    requestAnimationFrame(() => {
+      textarea?.focus();
+      textarea?.setSelectionRange(start + markdownLink.length, start + markdownLink.length);
+    });
   };
 
   const handleDelete = async (id: string, title: string) => {
@@ -303,9 +337,12 @@ export default function AdminBlogsPage() {
               <div className="form-group full-width">
                 <label className="form-label">
                   Full Article Content
-                  <span className="hint">Separate paragraphs with double newlines. Use ## for headings.</span>
+                  <span className="hint">
+                    Separate paragraphs with double newlines. Use ## for headings. Links use [link text](https://example.com).
+                  </span>
                 </label>
                 <textarea
+                  ref={contentRef}
                   className="form-textarea"
                   rows={10}
                   value={editingBlog.content}
@@ -313,6 +350,29 @@ export default function AdminBlogsPage() {
                   placeholder="Write the full post here..."
                   required
                 />
+                <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.6rem', marginTop: '0.6rem' }}>
+                  <input
+                    type="text"
+                    className="form-input"
+                    aria-label="Link text"
+                    value={linkText}
+                    onChange={(e) => setLinkText(e.target.value)}
+                    placeholder="Link text (optional)"
+                    style={{ flex: '1 1 12rem' }}
+                  />
+                  <input
+                    type="text"
+                    className="form-input"
+                    aria-label="Link URL"
+                    value={linkUrl}
+                    onChange={(e) => setLinkUrl(e.target.value)}
+                    placeholder="https://example.com"
+                    style={{ flex: '2 1 16rem' }}
+                  />
+                  <button type="button" className="btn btn-outline btn-sm" onClick={handleInsertLink}>
+                    <Link2 size={14} /> Insert Link
+                  </button>
+                </div>
               </div>
 
               <div className="form-group full-width" style={{ marginTop: '0.5rem' }}>
