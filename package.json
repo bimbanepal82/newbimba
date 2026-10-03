@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:legacy": "node build.js"
+    "build:legacy": "node build.js",
+    "build:cloudflare": "opennextjs-cloudflare build"
   },
   "engines": {
     "node": ">=18"
