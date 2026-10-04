@@ -4100,6 +4100,7 @@ __metadata:
     bcryptjs: "npm:^3.0.3"
     lucide-react: "npm:^1.51.0"
     next: "npm:^16.3.8"
+    nodemailer: "npm:^10.0.14"
     react: "npm:^19.3.0"
     react-dom: "npm:^19.3.0"
     typescript: "npm:^7.0.2"
@@ -4205,6 +4206,13 @@ __metadata:
   bin:
     node-gyp: bin/node-gyp.js
   checksum: 10c0/c6693e52e0e111b21f5cd8ff303b41b51f40338adcc79ac5c6a02399eba7039d50dc816dcafcc485870291a641f7cb75db8887a9bdd0de537fe635a3a81cba5b
+  languageName: node
+  linkType: hard
+
+"nodemailer@npm:^10.0.14":
+  version: 10.0.14
+  resolution: "nodemailer@npm:10.0.14"
+  checksum: 10c0/8965d6ccd0a69f5b439d2bf5efc67cc4bac34f4893749c7b6b6290d5541beaf03174a169546739f370e989fd0f050221eec25aa6b017544d5b16fc23be374937
   languageName: node
   linkType: hard
 
