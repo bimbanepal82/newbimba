@@ -24,23 +24,7 @@ export default function DonatePage() {
               <strong>How donating works:</strong> This website does not process online payments directly. You donate safely from your own banking or Fonepay app by scanning the official bank QR code.
             </div>
 
-            <h2>1. Choose a suggested amount</h2>
-            <div className="chip-group">
-              {amounts.map((amt) => (
-                <label key={amt} className="chip">
-                  <input
-                    type="radio"
-                    name="amount"
-                    value={amt}
-                    checked={selectedAmount === amt}
-                    onChange={() => setSelectedAmount(amt)}
-                  />
-                  <span>Rs. {amt.toLocaleString()}</span>
-                </label>
-              ))}
-            </div>
-
-            <h2 style={{ marginTop: '2.5rem' }}>2. Scan the official QR</h2>
+            <h1 style={{ marginTop: '2.5rem' }}>1. Scan the official QR</h1>
             <div className="qr-panel">
               <h3>Kumari Bank — Samakhushi Branch</h3>
               <img

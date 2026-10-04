@@ -2,6 +2,7 @@ import React from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { getSettings } from '@/lib/data';
+import PingSupabase from '@/components/PingSupabase';
 
 // Force dynamic rendering so edits in CPanel appear immediately on page refresh
 export const dynamic = 'force-dynamic';
@@ -15,6 +16,7 @@ export default async function SiteLayout({
 
   return (
     <>
+    <PingSupabase/>
       <Header
         logo={settings.site?.logo}
         siteName={settings.site?.name}
