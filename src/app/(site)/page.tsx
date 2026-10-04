@@ -140,7 +140,7 @@ export default async function HomePage() {
       </section>
 
       {/* Contact Section */}
-      <section className="section">
+      {/* <section className="section">
         <div className="container narrow-grid">
           <div>
             <h2>Contact</h2>
@@ -158,7 +158,7 @@ export default async function HomePage() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }
