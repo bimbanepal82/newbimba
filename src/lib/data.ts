@@ -214,7 +214,38 @@ export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
   return blogs.find((b) => b.slug === slug) || null;
 }
 
+export async function slugExists(slug: string, excludeId?: string): Promise<boolean> {
+  let query = getSupabaseAdmin().from('blogs').select('id').eq('slug', slug);
+  
+  if (excludeId) query = query.neq('id', excludeId);
+
+  const { data} = await query.limit(1);
+
+  //  by pass for new blog post creation, if data is null or empty, return false
+  if (!data) {
+    return false;
+  }
+  return !!data && data.length > 0;
+}
+
 export async function saveBlog(post: BlogPost): Promise<BlogPost> {
+   const slug = post.slug;
+
+   const isExisting = !!post.id && !post.id.startsWith('blog-');
+
+   if (!slug) {
+    const err: any = new Error('Could not generate a slug from this title');
+    err.code = 'SLUG_INVALID';
+    throw err;
+  }
+
+const slugAlreadyExists = await slugExists(slug, isExisting ? post.id : undefined);
+ 
+if (slugAlreadyExists) {
+    const err: any = new Error(`Slug "${slug}" is already in use`);
+    err.code = 'SLUG_EXISTS';
+    throw err;
+  }
   const payload: any = {
     title: post.title,
     slug: post.slug,
@@ -228,19 +259,20 @@ export async function saveBlog(post: BlogPost): Promise<BlogPost> {
     updated_at: new Date().toISOString(),
   };
 
-  if (post.id && !post.id.startsWith('blog-')) {
+  if (isExisting) {
     payload.id = post.id;
   }
+   const table = getSupabaseAdmin().from('blogs');
+    const query = isExisting
+    ? table.upsert(payload, { onConflict: 'id' })
+    : table.insert(payload);
 
-  const { data, error } = await getSupabaseAdmin()
-    .from('blogs')
-    .upsert(payload, { onConflict: 'slug' })
-    .select('*')
-    .single();
+ const { data, error } = await query.select('*').single();
 
   if (error) {
     throw new Error(`Failed to save blog in Supabase: ${error.message}`);
   }
+
   post.id = data.id;
   return post;
 }

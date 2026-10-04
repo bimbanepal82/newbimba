@@ -41,6 +41,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, blog: saved });
   } catch (error) {
     console.error('Failed to save blog:', error);
+      if (error?.code === 'SLUG_EXISTS' || error?.code === '23505') {
+      return NextResponse.json(
+        { error: 'Another post already uses this URL slug. Please change the slug.' },
+        { status: 409,}
+      );
+    }
+    
     return NextResponse.json({ error: 'Failed to save blog' }, { status: 500 });
   }
 }

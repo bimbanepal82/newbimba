@@ -12,7 +12,9 @@ export default function AdminBlogsPage() {
   const [linkText, setLinkText] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const [saving, setSaving] = useState(false);
+   const slugInputRef = useRef<HTMLInputElement>(null);
+ const [slugError, setSlugError] = useState<string | null>(null); 
+   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   const fetchBlogs = async () => {
@@ -33,7 +35,13 @@ export default function AdminBlogsPage() {
     fetchBlogs();
   }, []);
 
+
+    const closeEditor = () => {
+    setEditingBlog(null);
+    setSlugError(null);
+  };
   const handleCreateNew = () => {
+       setSlugError(null);
     setEditingBlog({
       id: '',
       title: '',
@@ -48,7 +56,7 @@ export default function AdminBlogsPage() {
     });
   };
 
-  const handleEdit = (blog: BlogPost) => {
+  const handleEdit = (blog: BlogPost) => { setSlugError(null);
     setEditingBlog({ ...blog });
   };
 
@@ -106,7 +114,7 @@ export default function AdminBlogsPage() {
     if (!editingBlog) return;
 
     setSaving(true);
-    setMessage(null);
+    setMessage(null); setSlugError(null);
 
     // Auto slug if empty
     const blogToSave = {
@@ -125,15 +133,25 @@ export default function AdminBlogsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(blogToSave),
       });
+const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
 
-      if (!res.ok) throw new Error('Failed to save');
-
+   if (res.status === 409) {
+          setSlugError(data.error || 'This slug is already in use.');
+          slugInputRef.current?.focus();
+          slugInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    throw new Error(data.error || 'Failed to save');
+  }
       setMessage({ type: 'success', text: 'Blog post saved successfully!' });
       setEditingBlog(null);
       fetchBlogs();
     } catch (err) {
-      setMessage({ type: 'error', text: 'Error saving blog post' });
-    } finally {
+      console.log({err})
+  setMessage({
+    type: 'error',
+    text: err instanceof Error ? err.message : 'Error saving blog post',
+  });    } finally {
       setSaving(false);
     }
   };
@@ -160,6 +178,13 @@ export default function AdminBlogsPage() {
       setMessage({ type: 'error', text: 'Image upload failed' });
     }
   };
+
+  useEffect(() => {
+  if (!message) return;
+  const timer = setTimeout(() => setMessage(null), 5000);
+  return () => clearTimeout(timer);
+}, [message]);
+
 
   if (loading) {
     return (
@@ -195,13 +220,34 @@ export default function AdminBlogsPage() {
       </div>
 
       {message && (
-        <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-error'}`}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            {message.type === 'success' ? <Check size={18} /> : <AlertCircle size={18} />}
-            <span>{message.text}</span>
-          </div>
-        </div>
-      )}
+  <div
+    className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-error'}`}
+    role={message.type === 'error' ? 'alert' : 'status'}
+    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.8rem' }}
+  >
+    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+      {message.type === 'success' ? <Check size={18} /> : <AlertCircle size={18} />}
+      <span>{message.text}</span>
+    </div>
+    <button
+      type="button"
+      onClick={() => setMessage(null)}
+      aria-label="Dismiss message"
+      title="Dismiss"
+      style={{
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        color: 'inherit',
+        display: 'flex',
+        padding: '0.2rem',
+        opacity: 0.7,
+      }}
+    >
+      <X size={16} />
+    </button>
+  </div>
+)}
 
       {/* Blog Editor Form */}
       {editingBlog ? (
@@ -228,7 +274,9 @@ export default function AdminBlogsPage() {
                   type="text"
                   className="form-input"
                   value={editingBlog.title}
-                  onChange={(e) =>
+                  maxLength={150}
+                   onChange={(e) => {
+                    if (slugError) setSlugError(null);
                     setEditingBlog({
                       ...editingBlog,
                       title: e.target.value,
@@ -239,7 +287,7 @@ export default function AdminBlogsPage() {
                               .toLowerCase()
                               .replace(/[^\w\s-]/g, '')
                               .replace(/\s+/g, '-'),
-                    })
+                    })}
                   }
                   required
                   placeholder="e.g. Free Geriatric Health Camp in Mathatirtha"
@@ -251,13 +299,28 @@ export default function AdminBlogsPage() {
                   URL Slug
                   <span className="hint">Used in /news/[slug] URL</span>
                 </label>
-                <input
+                <input  ref={slugInputRef}
                   type="text"
                   className="form-input"
                   value={editingBlog.slug}
                   onChange={(e) => setEditingBlog({ ...editingBlog, slug: e.target.value })}
-                  placeholder="e.g. free-geriatric-health-camp"
-                />
+                  placeholder={"e.g. free-geriatric-health-camp"}
+                  aria-invalid={!!slugError}
+                  aria-describedby={slugError ? 'slug-error' : undefined}
+                      style={
+                    slugError
+                      ? { borderColor: '#dc2626', boxShadow: '0 0 0 3px rgba(220, 38, 38, 0.15)' }
+                      : undefined
+                  }
+                /> {slugError && (
+                  <p
+                    id="slug-error"
+                    role="alert"
+                    style={{ color: '#dc2626', fontSize: '0.85rem', margin: '0.35rem 0 0' }}
+                  >
+                    {slugError}
+                  </p>
+                )}
               </div>
 
               <div className="form-group">
@@ -393,7 +456,7 @@ export default function AdminBlogsPage() {
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.8rem', marginTop: '1.5rem', borderTop: '1px solid var(--admin-border)', paddingTop: '1.2rem' }}>
               <button
                 type="button"
-                onClick={() => setEditingBlog(null)}
+                onClick={closeEditor}
                 className="btn btn-outline"
               >
                 Cancel

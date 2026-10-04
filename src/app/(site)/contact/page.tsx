@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import { Mail, MapPin, Send, Check } from 'lucide-react';
 import s from './contact.module.css';
+import { INQUIRY_TYPES } from '@/lib/constants';
 
-const INQUIRY_TYPES = ['General', 'Partnership', 'Volunteering', 'Donation', 'Media'];
 const MAX_MESSAGE = 3000;
 
 type Fields = 'name' | 'email' | 'subject' | 'message';
